@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apna Sathee - AI-Powered JoSAA Counselling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#1B2F7E',
+                        'navy-dark': '#0F1A4A',
+                        teal: '#00BFA5',
+                        'teal-light': '#00D4B8',
+                        graybg: '#F8FAFC',
+                        'brand-teal': '#1D9E75',
+                        'brand-purple': '#534AB7',
+                        'brand-coral': '#D85A30',
+                        'brand-blue': '#378ADD'
+                    },
+                    fontFamily: { poppins: ['Poppins', 'sans-serif'], inter: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 100ms; }
+        .reveal-delay-2 { transition-delay: 200ms; }
+        .reveal-delay-3 { transition-delay: 300ms; }
+        .reveal-delay-4 { transition-delay: 400ms; }
+        .reveal-left { opacity: 0; transform: translateX(-50px); transition: all 0.8s ease-out; }
+        .reveal-right { opacity: 0; transform: translateX(50px); transition: all 0.8s ease-out; }
+        .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+        .card-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .card-body.open { max-height: 800px; }
+        .flash-card .card-arrow { transition: transform 0.3s ease; }
+        .flash-card.active .card-arrow { transform: rotate(180deg); }
+        @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 20px rgba(0, 191, 165, 0.15), 0 10px 40px rgba(0, 0, 0, 0.05); } 50% { box-shadow: 0 0 40px rgba(0, 191, 165, 0.35), 0 15px 50px rgba(0, 0, 0, 0.08); } }
+        .pricing-card-glow { animation: glow-pulse 3s ease-in-out infinite; }
+        @keyframes text-glow { 0%, 100% { text-shadow: 0 0 10px rgba(0, 191, 165, 0.4), 0 0 20px rgba(0, 191, 165, 0.2); } 50% { text-shadow: 0 0 25px rgba(0, 191, 165, 0.8), 0 0 50px rgba(0, 191, 165, 0.5); } }
+        .price-glow { color: #00BFA5; animation: text-glow 2s ease-in-out infinite; display: inline-block; }
+        @keyframes badge-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .badge-pulse { animation: badge-pulse 2s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-graybg">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm py-4 px-6 md:px-12 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 overflow-hidden">
+                    <img src="https://z-cdn-media.chatglm.cn/files/a7980056-8c6e-4930-875a-3ff115797a2e.png?auth_key=1878497751-f18e6b1db09f4483b26e36173864a9b9-0-0246fedaa5c0815d58915b0a8b153a2c" alt="Logo" class="h-full w-auto object-cover object-top" style="transform: scale(1.5); transform-origin: top center;">
+                </div>
+                <span class="font-poppins font-bold text-navy text-xl">Apna Sathee</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#problem" class="text-gray-600 hover:text-navy font-inter font-medium transition-colors">About</a>
+                <a href="#solution" class="text-gray-600 hover:text-navy font-inter font-medium transition-colors">Solution</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-navy font-inter font-medium transition-colors">Process</a>
+                <a href="#pricing" class="text-gray-600 hover:text-navy font-inter font-medium transition-colors">Pricing</a>
+                <a href="#ai-chatbot-link" class="bg-teal hover:bg-teal-light text-white font-poppins font-semibold text-sm px-6 py-2.5 rounded-full transition-all shadow-md hover:shadow-lg">Talk to Saathi</a>
+            </div>
+            <button class="md:hidden text-navy text-2xl"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- SECTION 1: HERO -->
+    <section class="bg-graybg pt-20 md:pt-28 pb-8 md:pb-12 px-6 md:px-12 overflow-hidden relative">
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#1B2F7E 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+            <div class="md:w-[55%] text-center md:text-left">
+                <h1 class="font-poppins font-extrabold text-navy text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
+                    JEE Advanced Done? <br> Now Choose the <span id="typewriter" class="text-teal"></span><span class="text-teal cursor-blink">|</span>
+                </h1>
+                <p class="font-inter text-gray-600 text-lg md:text-xl mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed">
+                    AI-powered JoSAA counselling & career domain exploration — built by IITian Seniors who've been through it all.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-8">
+                    <a href="#ai-chatbot-link" class="bg-teal hover:bg-teal-light text-white font-poppins font-semibold text-lg px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+                        <i class="fas fa-robot"></i> Talk to Saathi
+                    </a>
+                    <a href="https://chat.whatsapp.com/HQEeF9QsHA6IYHqMehFBQI" target="_blank" class="bg-white border-2 border-navy text-navy hover:bg-navy hover:text-white font-poppins font-semibold text-lg px-8 py-4 rounded-full transition-all shadow-sm hover:shadow-lg flex items-center justify-center gap-3">
+                        <i class="fas fa-users"></i> Join Community
+                    </a>
+                </div>
+                <div class="flex items-center gap-6 text-sm text-gray-500 font-inter justify-center md:justify-start">
+                    <span class="flex items-center gap-2"><i class="fas fa-check-circle text-teal"></i> Built by IITian Seniors</span>
+                    <span class="flex items-center gap-2"><i class="fas fa-check-circle text-teal"></i> 72+ Free Domains</span>
+                </div>
+            </div>
+            <div class="md:w-[45%] flex justify-center items-center py-4 md:py-0">
+                <div class="animate-float w-full">
+                    <img src="https://z-cdn-media.chatglm.cn/files/1446709f-767c-43ac-9566-6682cb11c2e2.png?auth_key=1878498354-69a5643b10d34407947e6cb4e4b7aaef-0-638b18dbd5a0cc4b6f40a051f0aa5afe" alt="What's Next" class="w-full scale-105 drop-shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: THE PROBLEM -->
+    <section id="problem" class="bg-graybg pt-12 md:pt-20 pb-12 md:pb-16 px-6 md:px-12 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-teal uppercase tracking-[4px] font-inter font-bold text-sm reveal">The Problem</span>
+                <h2 class="font-poppins font-bold text-navy text-3xl md:text-4xl lg:text-5xl mt-4 mb-6 reveal reveal-delay-1">JoSAA Counselling is Confusing. We Get It.</h2>
+                <p class="font-inter text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed reveal reveal-delay-2">Every year, students face the same chaos. Don't let these common problems cost you your dream seat.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 reveal reveal-delay-3">
+                <div class="bg-white p-6 rounded-2xl shadow-sm text-center border border-gray-100">
+                    <h3 class="font-poppins font-extrabold text-4xl text-navy counter" data-target="180000">0</h3>
+                    <p class="font-inter text-gray-500 mt-2 text-sm font-medium">Students Qualify Yearly</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm text-center border border-gray-100">
+                    <h3 class="font-poppins font-extrabold text-4xl text-navy counter" data-target="6">0</h3>
+                    <p class="font-inter text-gray-500 mt-2 text-sm font-medium">Rounds of Counselling</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm text-center border border-gray-100">
+                    <h3 class="font-poppins font-extrabold text-4xl text-navy counter" data-target="1000">0</h3>
+                    <p class="font-inter text-gray-500 mt-2 text-sm font-medium">Choices to Fill</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal reveal-delay-1 flex justify-center">
+                    <img src="https://z-cdn-media.chatglm.cn/files/61c65f95-682b-4f50-b211-d597abc3683e.png?auth_key=1878500531-3765f039e70246fcb50b694dae96c1a1-0-31766d3ccd068f1cc43d2614093c35d1" alt="Student confused" class="w-full max-w-md rounded-2xl drop-shadow-xl hover:scale-[1.02] transition-transform duration-300">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border-t-4 border-transparent hover:border-brand-purple shadow-sm hover:shadow-xl hover:-translate-y-[3px] transition-all duration-300 reveal reveal-delay-1">
+                        <div class="w-10 h-10 bg-brand-purple/10 rounded-lg flex items-center justify-center text-brand-purple text-lg mb-4"><i class="fas fa-clipboard-list"></i></div>
+                        <h3 class="font-poppins font-bold text-navy text-lg mb-2">Preference List Panic</h3>
+                        <p class="font-inter text-gray-500 text-sm leading-relaxed mb-4">Filling 1000+ choices blindly without strategy can cost you a better seat.</p>
+                        <span class="inline-block bg-brand-purple/10 text-brand-purple text-[10px] font-bold px-2.5 py-1 rounded-full font-inter uppercase tracking-wide">Most common mistake</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border-t-4 border-transparent hover:border-brand-teal shadow-sm hover:shadow-xl hover:-translate-y-[3px] transition-all duration-300 reveal reveal-delay-2">
+                        <div class="w-10 h-10 bg-brand-teal/10 rounded-lg flex items-center justify-center text-brand-teal text-lg mb-4"><i class="fas fa-sync-alt"></i></div>
+                        <h3 class="font-poppins font-bold text-navy text-lg mb-2">Float, Freeze, Slide?</h3>
+                        <p class="font-inter text-gray-500 text-sm leading-relaxed mb-4">One wrong click at the wrong round can lock you into a seat you never wanted.</p>
+                        <span class="inline-block bg-brand-teal/10 text-brand-teal text-[10px] font-bold px-2.5 py-1 rounded-full font-inter uppercase tracking-wide">Confuses 70% of students</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border-t-4 border-transparent hover:border-brand-coral shadow-sm hover:shadow-xl hover:-translate-y-[3px] transition-all duration-300 reveal reveal-delay-3">
+                        <div class="w-10 h-10 bg-brand-coral/10 rounded-lg flex items-center justify-center text-brand-coral text-lg mb-4"><i class="fas fa-hourglass-half"></i></div>
+                        <h3 class="font-poppins font-bold text-navy text-lg mb-2">Deadline Stress</h3>
+                        <p class="font-inter text-gray-500 text-sm leading-relaxed mb-4">Missing one document or failing to report on time can cancel your admission entirely.</p>
+                        <span class="inline-block bg-brand-coral/10 text-brand-coral text-[10px] font-bold px-2.5 py-1 rounded-full font-inter uppercase tracking-wide">Causes 1000s of lost seats</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border-t-4 border-transparent hover:border-brand-blue shadow-sm hover:shadow-xl hover:-translate-y-[3px] transition-all duration-300 reveal reveal-delay-4">
+                        <div class="w-10 h-10 bg-brand-blue/10 rounded-lg flex items-center justify-center text-brand-blue text-lg mb-4"><i class="fas fa-compass"></i></div>
+                        <h3 class="font-poppins font-bold text-navy text-lg mb-2">Zero Direction After</h3>
+                        <p class="font-inter text-gray-500 text-sm leading-relaxed mb-4">Cracking JEE was the only goal. Now in college, students have no idea about career paths.</p>
+                        <span class="inline-block bg-brand-blue/10 text-brand-blue text-[10px] font-bold px-2.5 py-1 rounded-full font-inter uppercase tracking-wide">Affects 90% of freshers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: THE SOLUTION (FLASH CARDS) -->
+    <section id="solution" class="bg-graybg pt-12 md:pt-16 pb-20 md:pb-28 px-6 md:px-12 relative">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-teal uppercase tracking-[4px] font-inter font-bold text-sm reveal">The Solution</span>
+                <h2 class="font-poppins font-bold text-navy text-3xl md:text-4xl lg:text-5xl mt-4 mb-6 reveal reveal-delay-1">The End of Confusion. Meet Apna Sathee.</h2>
+                <p class="font-inter text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed reveal reveal-delay-2">Click on the cards below to explore how we solve your biggest problems.</p>
+            </div>
+            <div class="space-y-6 reveal reveal-delay-3">
+                <div class="flash-card bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                    <div onclick="toggleCard('ai')" class="cursor-pointer p-6 md:p-8 flex items-center justify-between">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 bg-teal/10 rounded-xl flex items-center justify-center text-teal text-2xl flex-shrink-0"><i class="fas fa-robot"></i></div>
+                            <div>
+                                <h3 class="font-poppins font-bold text-navy text-2xl">AI Counselling</h3>
+                                <p class="font-inter text-gray-500 text-sm mt-1">Navigate JoSAA with Confidence</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 text-xl card-arrow"></i>
+                    </div>
+                    <div id="card-ai" class="card-body">
+                        <div class="px-6 md:px-8 pb-8 grid md:grid-cols-2 gap-10 items-center">
+                            <div class="space-y-5">
+                                <div class="flex items-start gap-4"><div class="w-8 h-8 bg-teal/10 rounded-lg flex items-center justify-center text-teal text-sm flex-shrink-0 mt-0.5"><i class="fas fa-list-ol"></i></div><div><h4 class="font-poppins font-semibold text-navy text-base mb-1">Smart Preference Lists</h4><p class="font-inter text-gray-500 text-sm leading-relaxed">Rank-optimized lists based on your category. No more blind guessing.</p></div></div>
+                                <div class="flex items-start gap-4"><div class="w-8 h-8 bg-teal/10 rounded-lg flex items-center justify-center text-teal text-sm flex-shrink-0 mt-0.5"><i class="fas fa-chart-pie"></i></div><div><h4 class="font-poppins font-semibold text-navy text-base mb-1">My Chances Dashboard</h4><p class="font-inter text-gray-500 text-sm leading-relaxed">Color-coded safe, borderline, and reach colleges for your exact rank.</p></div></div>
+                                <div class="flex items-start gap-4"><div class="w-8 h-8 bg-teal/10 rounded-lg flex items-center justify-center text-teal text-sm flex-shrink-0 mt-0.5"><i class="fas fa-user-shield"></i></div><div><h4 class="font-poppins font-semibold text-navy text-base mb-1">Human Mentor Escalation</h4><p class="font-inter text-gray-500 text-sm leading-relaxed">Complex query? Instantly connect with verified IIT seniors 12x7.</p></div></div>
+                            </div>
+                            <div class="flex justify-center">
+                                <img src="https://z-cdn-media.chatglm.cn/files/b44a6072-c013-4491-a501-4739a481af91.png?auth_key=1878501249-fbb8b30300f54966a14d2441a23dbf83-0-1d8fc0ec557e771f9cd0b6c9228e816a" alt="Saathi AI" class="w-full max-w-sm rounded-xl shadow-lg border border-gray-100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flash-card bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                    <div onclick="toggleCard('domains')" class="cursor-pointer p-6 md:p-8 flex items-center justify-between">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 bg-brand-blue/10 rounded-xl flex items-center justify-center text-brand-blue text-2xl flex-shrink-0"><i class="fas fa-compass"></i></div>
+                            <div>
+                                <h3 class="font-poppins font-bold text-navy text-2xl">Domain Exploration</h3>
+                                <p class="font-inter text-gray-500 text-sm mt-1">Explore 72+ Career Domains for Free</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 text-xl card-arrow"></i>
+                    </div>
+                    <div id="card-domains" class="card-body">
+                        <div class="px-6 md:px-8 pb-8 grid md:grid-cols-2 gap-10 items-center">
+                            <div>
+                                <p class="font-inter text-gray-600 text-base leading-relaxed mb-6">Joining college is just the start. We give you a completely free chance to explore 72+ career domains so you never feel lost again.</p>
+                                <div class="space-y-4">
+                                    <div class="flex items-start gap-4"><div class="w-8 h-8 bg-brand-blue/10 rounded-lg flex items-center justify-center text-brand-blue text-sm flex-shrink-0 mt-0.5"><i class="fas fa-layer-group"></i></div><p class="font-inter text-gray-600 text-sm leading-relaxed"><span class="font-semibold text-navy">Massive Variety:</span> Explore 72+ domains including Tech, Finance, Core Engineering, Consulting, Design, and more.</p></div>
+                                    <div class="flex items-start gap-4"><div class="w-8 h-8 bg-brand-blue/10 rounded-lg flex items-center justify-center text-brand-blue text-sm flex-shrink-0 mt-0.5"><i class="fas fa-exchange-alt"></i></div><p class="font-inter text-gray-600 text-sm leading-relaxed"><span class="font-semibold text-navy">Switch Anytime:</span> Don't like one domain? Seamlessly switch to another that fits your true interests.</p></div>
+                                    <div class="flex items-start gap-4"><div class="w-8 h-8 bg-brand-blue/10 rounded-lg flex items-center justify-center text-brand-blue text-sm flex-shrink-0 mt-0.5"><i class="fas fa-lock-open"></i></div><p class="font-inter text-gray-600 text-sm leading-relaxed"><span class="font-semibold text-navy">100% Free:</span> The entire exploration programme is completely free, forever. No paywalls for career clarity.</p></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-center">
+                                <img src="https://z-cdn-media.chatglm.cn/files/66dd5b96-b2e5-490b-bd63-3e9fc5450c57.png?auth_key=1878501993-64b18f532f7342d6948c4a01644765c3-0-713a40e3ce1ffa2ebc1fea098a7f8658" alt="Domain Exploration" class="w-full max-w-sm rounded-xl shadow-lg border border-gray-100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: HOW IT WORKS (Z-PATTERN) -->
+    <section id="how-it-works" class="bg-graybg py-20 md:py-28 px-6 md:px-12 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-20">
+                <span class="text-teal uppercase tracking-[4px] font-inter font-bold text-sm reveal">The Process</span>
+                <h2 class="font-poppins font-bold text-navy text-3xl md:text-4xl lg:text-5xl mt-4 mb-6 reveal reveal-delay-1">Get Started in 3 Simple Steps</h2>
+                <p class="font-inter text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed reveal reveal-delay-2">No complicated sign-ups. No lengthy forms. Just straight-up guidance.</p>
+            </div>
+            <div class="space-y-24 md:space-y-32">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+                    <div class="relative reveal-left">
+                        <span class="font-poppins font-extrabold text-[120px] md:text-[180px] leading-none text-navy/[0.04] absolute -top-16 -left-6 select-none pointer-events-none">01</span>
+                        <div class="relative z-10 pt-4">
+                            <h3 class="font-poppins font-bold text-navy text-2xl md:text-3xl mb-4">Talk to Saathi</h3>
+                            <p class="font-inter text-gray-500 text-base md:text-lg leading-relaxed">Click 'Talk to Saathi' and enter your JEE Advanced rank, category, and preferences. It instantly analyzes years of JoSAA cutoff data to understand exactly where you stand, 24/7.</p>
+                        </div>
+                    </div>
+                    <div class="reveal-right">
+                        <img src="https://z-cdn-media.chatglm.cn/files/7f85402c-e84b-4c10-9eee-f25801b9dafd.png?auth_key=1878503480-844df636ce554f42af46fdfac0217009-0-9c4b5693e074b169175bb61eb1065c95" alt="Talk to Saathi" class="w-full rounded-2xl shadow-xl border border-gray-100 hover:scale-[1.02] transition-transform duration-300">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+                    <div class="order-2 md:order-1 reveal-left">
+                        <img src="https://z-cdn-media.chatglm.cn/files/048afedd-c930-4b87-a775-24e1f66e0d39.png?auth_key=1878503480-f85e09bfa1bf464a921e3d6e169bb392-0-0a68e48cfffdeef635e0bf2b4b7db702" alt="Get Strategy" class="w-full rounded-2xl shadow-xl border border-gray-100 hover:scale-[1.02] transition-transform duration-300">
+                    </div>
+                    <div class="relative order-1 md:order-2 reveal-right">
+                        <span class="font-poppins font-extrabold text-[120px] md:text-[180px] leading-none text-navy/[0.04] absolute -top-16 -right-6 select-none pointer-events-none md:block hidden">02</span>
+                        <span class="font-poppins font-extrabold text-[120px] md:text-[180px] leading-none text-navy/[0.04] absolute -top-16 -left-6 select-none pointer-events-none md:hidden">02</span>
+                        <div class="relative z-10 pt-4">
+                            <h3 class="font-poppins font-bold text-navy text-2xl md:text-3xl mb-4">Get Your Strategy</h3>
+                            <p class="font-inter text-gray-500 text-base md:text-lg leading-relaxed">Saathi generates your personalized, rank-optimized preference list. Understand float/freeze/slide for your exact situation, check document requirements, and get college comparisons in seconds.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+                    <div class="relative reveal-left">
+                        <span class="font-poppins font-extrabold text-[120px] md:text-[180px] leading-none text-navy/[0.04] absolute -top-16 -left-6 select-none pointer-events-none">03</span>
+                        <div class="relative z-10 pt-4">
+                            <h3 class="font-poppins font-bold text-navy text-2xl md:text-3xl mb-4">Explore Domains <span class="text-brand-coral">(Free!)</span></h3>
+                            <p class="font-inter text-gray-500 text-base md:text-lg leading-relaxed">Once you secure your seat, unlock 72+ career domains completely free. From AI and Quant to Core Engineering and UPSC, find structured roadmaps and real IITian insights to shape your journey.</p>
+                        </div>
+                    </div>
+                    <div class="reveal-right">
+                        <img src="https://z-cdn-media.chatglm.cn/files/9d13bdf1-81bc-4de5-aaec-033ace50d82b.png?auth_key=1878503480-bf748e497ead40d3a806916453d9af78-0-e4017f0af370a1cb3b25f2e027143d27" alt="Explore Domains" class="w-full rounded-2xl shadow-xl border border-gray-100 hover:scale-[1.02] transition-transform duration-300">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: PRICING / EARLY BIRD -->
+    <section id="pricing" class="bg-graybg py-20 md:py-28 px-6 md:px-12 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-teal/10 text-teal font-poppins font-bold text-sm px-5 py-2 rounded-full border border-teal/20 badge-pulse reveal">🔥 LIMITED TIME EARLY BIRD OFFER</span>
+                <h2 class="font-poppins font-bold text-navy text-3xl md:text-4xl lg:text-5xl mt-6 mb-4 reveal reveal-delay-1">
+                    Secure Your Dream College for Just <span class="price-glow">₹249</span>
+                </h2>
+                <p class="font-inter text-gray-500 text-lg max-w-xl mx-auto leading-relaxed reveal reveal-delay-2">
+                    This exclusive price is only valid until <strong class="text-navy">May 17, 2026</strong>. After that, it goes up to ₹499.
+                </p>
+            </div>
+            <div class="bg-white rounded-3xl border-2 border-teal/30 p-8 md:p-12 pricing-card-glow reveal reveal-delay-3">
+                <div class="text-center mb-10">
+                    <span class="font-inter text-gray-400 line-through text-2xl font-semibold">₹499</span>
+                    <div class="mt-2 flex items-baseline justify-center gap-2">
+                        <span class="font-poppins font-extrabold text-navy text-6xl md:text-7xl price-glow">₹249</span>
+                    </div>
+                    <p class="font-inter text-gray-500 text-sm mt-3">One-Time Payment • No Subscriptions • Lifetime Domain Access</p>
+                </div>
+                <div class="flex justify-center gap-4 sm:gap-6 mb-12">
+                    <div class="text-center">
+                        <div class="bg-graybg border border-gray-200 rounded-xl w-20 sm:w-24 h-20 sm:h-24 flex items-center justify-center shadow-sm">
+                            <span id="countdown-days" class="font-poppins font-bold text-navy text-3xl sm:text-4xl">00</span>
+                        </div>
+                        <span class="font-inter text-gray-500 text-xs mt-2 block uppercase tracking-wider">Days</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-graybg border border-gray-200 rounded-xl w-20 sm:w-24 h-20 sm:h-24 flex items-center justify-center shadow-sm">
+                            <span id="countdown-hours" class="font-poppins font-bold text-navy text-3xl sm:text-4xl">00</span>
+                        </div>
+                        <span class="font-inter text-gray-500 text-xs mt-2 block uppercase tracking-wider">Hours</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-graybg border border-gray-200 rounded-xl w-20 sm:w-24 h-20 sm:h-24 flex items-center justify-center shadow-sm">
+                            <span id="countdown-minutes" class="font-poppins font-bold text-navy text-3xl sm:text-4xl">00</span>
+                        </div>
+                        <span class="font-inter text-gray-500 text-xs mt-2 block uppercase tracking-wider">Mins</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="bg-graybg border border-gray-200 rounded-xl w-20 sm:w-24 h-20 sm:h-24 flex items-center justify-center shadow-sm">
+                            <span id="countdown-seconds" class="font-poppins font-bold text-teal text-3xl sm:text-4xl">00</span>
+                        </div>
+                        <span class="font-inter text-gray-500 text-xs mt-2 block uppercase tracking-wider">Secs</span>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 mb-12">
+                    <div class="flex items-center gap-3"><div class="w-6 h-6 bg-teal/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-teal text-xs"></i></div><span class="font-inter text-navy text-sm">Unlimited AI Chatbot Access (Saathi 24/7)</span></div>
+                    <div class="flex items-center gap-3"><div class="w-6 h-6 bg-teal/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-teal text-xs"></i></div><span class="font-inter text-navy text-sm">Smart Preference List Strategy</span></div>
+                    <div class="flex items-center gap-3"><div class="w-6 h-6 bg-teal/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-teal text-xs"></i></div><span class="font-inter text-navy text-sm">My Chances Dashboard</span></div>
+                    <div class="flex items-center gap-3"><div class="w-6 h-6 bg-teal/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-teal text-xs"></i></div><span class="font-inter text-navy text-sm">College & Branch Comparisons</span></div>
+                    <div class="flex items-center gap-3"><div class="w-6 h-6 bg-teal/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-teal text-xs"></i></div><span class="font-inter text-navy text-sm">WhatsApp Deadline Alerts</span></div>
+                    <div class="flex items-center gap-3"><div class="w-6 h-6 bg-teal/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-teal text-xs"></i></div><span class="font-inter text-navy text-sm">1-on-1 Human Mentor Session</span></div>
+                    <div class="flex items-center gap-3 sm:col-span-2"><div class="w-6 h-6 bg-brand-blue/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-gift text-brand-blue text-xs"></i></div><span class="font-inter text-navy text-sm font-semibold">72+ Career Domain Exploration (Free forever!)</span></div>
+                </div>
+                <div class="text-center">
+                    <a href="#ai-chatbot-link" class="inline-block bg-teal hover:bg-teal-light text-white font-poppins font-bold text-xl px-12 py-5 rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105">Register Now @ ₹249 🚀</a>
+                    <p class="font-inter text-gray-400 text-xs mt-5">You'll be redirected to our AI platform to complete your registration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: WHY TRUST US -->
+    <section id="trust" class="bg-white py-20 md:py-28 px-6 md:px-12 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-teal uppercase tracking-[4px] font-inter font-bold text-sm reveal">Trust & Credibility</span>
+                <h2 class="font-poppins font-bold text-navy text-3xl md:text-4xl lg:text-5xl mt-4 mb-6 reveal reveal-delay-1">Why Trust Apna Sathee?</h2>
+                <p class="font-inter text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed reveal reveal-delay-2">We are not a faceless company. We are IITian seniors who went through the exact same confusion you are facing right now.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <div class="text-center p-8 rounded-2xl border border-gray-100 hover:border-teal/30 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 reveal reveal-delay-1">
+                    <div class="w-16 h-16 bg-teal/10 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">🎓</div>
+                    <h3 class="font-poppins font-bold text-navy text-xl mb-4">Built by IITian Seniors</h3>
+                    <p class="font-inter text-gray-500 text-sm leading-relaxed">We aren't a random coaching institute. We personally navigated the JoSAA maze and IIT life. We know the float/freeze panic and the document anxiety because we've lived it.</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl border border-gray-100 hover:border-brand-purple/30 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 reveal reveal-delay-2">
+                    <div class="w-16 h-16 bg-brand-purple/10 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">💯</div>
+                    <h3 class="font-poppins font-bold text-navy text-xl mb-4">Honest AI, Real Data</h3>
+                    <p class="font-inter text-gray-500 text-sm leading-relaxed">Saathi doesn't guess. If it doesn't know something, it says so and escalates you to a human mentor. We use actual historical cutoff data, not assumptions.</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl border border-gray-100 hover:border-brand-blue/30 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all duration-300 reveal reveal-delay-3">
+                    <div class="w-16 h-16 bg-brand-blue/10 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">🤝</div>
+                    <h3 class="font-poppins font-bold text-navy text-xl mb-4">Free Value First</h3>
+                    <p class="font-inter text-gray-500 text-sm leading-relaxed">The 72+ domain exploration programme is completely free, forever. We build trust by giving massive value upfront. We are your long-term partner, not just a one-time tool.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: FINAL CTA -->
+    <section class="bg-navy py-20 md:py-28 px-6 md:px-12 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h2 class="font-poppins font-bold text-white text-3xl md:text-4xl lg:text-5xl mb-6 reveal">Don't Guess Your Future. <br> Let Us Guide You.</h2>
+            <p class="font-inter text-white/70 text-lg max-w-xl mx-auto leading-relaxed mb-10 reveal reveal-delay-1">Join hundreds of students making informed decisions. Your JEE Advanced rank deserves the right college, and your potential deserves the right career path.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center reveal reveal-delay-2">
+                <a href="#ai-chatbot-link" class="bg-white text-navy hover:bg-gray-100 font-poppins font-semibold text-lg px-8 py-4 rounded-full transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+                    <i class="fas fa-robot"></i> Talk to Saathi
+                </a>
+                <a href="https://chat.whatsapp.com/HQEeF9QsHA6IYHqMehFBQI" target="_blank" class="border-2 border-white/40 text-white hover:bg-white hover:text-navy font-poppins font-semibold text-lg px-8 py-4 rounded-full transition-all flex items-center justify-center gap-3">
+                    <i class="fab fa-whatsapp"></i> Join Community
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: FOOTER -->
+    <footer class="bg-[#0F1A4A] py-16 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="h-9 w-9 overflow-hidden">
+                        <img src="https://z-cdn-media.chatglm.cn/files/a7980056-8c6e-4930-875a-3ff115797a2e.png?auth_key=1878497751-f18e6b1db09f4483b26e36173864a9b9-0-0246fedaa5c0815d58915b0a8b153a2c" alt="Logo" class="h-full w-auto object-cover object-top" style="transform: scale(1.5); transform-origin: top center;">
+                    </div>
+                    <span class="font-poppins font-bold text-white text-xl">Apna Sathee</span>
+                </div>
+                <p class="font-inter text-white/50 text-sm leading-relaxed mb-2">AI-powered JoSAA counselling & career exploration platform.</p>
+                <p class="font-inter text-teal text-sm font-medium">By IITian Seniors</p>
+            </div>
+            <div>
+                <h4 class="font-poppins font-semibold text-white text-lg mb-6">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="#problem" class="font-inter text-white/60 hover:text-teal transition-colors text-sm">About</a></li>
+                    <li><a href="#how-it-works" class="font-inter text-white/60 hover:text-teal transition-colors text-sm">How It Works</a></li>
+                    <li><a href="#pricing" class="font-inter text-white/60 hover:text-teal transition-colors text-sm">Early Bird Offer</a></li>
+                    <li><a href="#ai-chatbot-link" class="font-inter text-white/60 hover:text-teal transition-colors text-sm">Talk to Saathi</a></li>
+                    <li><a href="#" onclick="openPrivacyModal(event)" class="font-inter text-white/60 hover:text-teal transition-colors text-sm">Privacy Policy & Terms</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-poppins font-semibold text-white text-lg mb-6">Connect With Us</h4>
+                <div class="space-y-4 mb-6">
+                    <a href="https://chat.whatsapp.com/HQEeF9QsHA6IYHqMehFBQI" target="_blank" class="flex items-center gap-3 font-inter text-white/60 hover:text-teal transition-colors text-sm">
+                        <i class="fab fa-whatsapp text-lg"></i> WhatsApp Community
+                    </a>
+                    <a href="https://www.instagram.com/apna_sathee?igsh=MXRqbDk5eGU1enoxOA==" target="_blank" class="flex items-center gap-3 font-inter text-white/60 hover:text-teal transition-colors text-sm">
+                        <i class="fab fa-instagram text-lg"></i> @apna_sathee
+                    </a>
+                </div>
+                <div class="bg-white p-2 rounded-lg inline-block">
+                    <img src="https://z-cdn-media.chatglm.cn/files/1778482810992_image.png" alt="Instagram QR Code" class="w-24 h-24 object-contain">
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-8 text-center">
+            <p class="font-inter text-white/40 text-xs">© 2026 Apna Sathee. All rights reserved. | Made with ❤️ by IITian Seniors</p>
+        </div>
+    </footer>
+
+    <!-- PRIVACY POLICY MODAL -->
+    <div id="privacyModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl relative">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white rounded-t-2xl z-10">
+                <h3 class="font-poppins font-bold text-navy text-xl">Privacy Policy & Terms of Service</h3>
+                <button onclick="closePrivacyModal()" class="text-gray-400 hover:text-navy transition-colors text-2xl"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto font-inter text-gray-600 text-sm leading-relaxed space-y-6">
+                <p><strong>Effective Date:</strong> May 2026 | <strong>Jurisdiction:</strong> Republic of India</p>
+                <div><h4 class="font-poppins font-bold text-navy text-base mb-2">1. Information We Collect</h4><p>We collect personal identification information (name, email, phone, DOB), academic and counselling information (JEE Advanced AIR, category, preferences), payment information (processed securely via Razorpay), and communication data (chat logs with Saathi, mentor session notes).</p></div>
+                <div><h4 class="font-poppins font-bold text-navy text-base mb-2">2. How We Use Your Information</h4><p>To provide personalised counselling, generate preference lists, process payments, send JoSAA deadline alerts, improve our AI's accuracy, and respond to support queries.</p></div>
+                <div><h4 class="font-poppins font-bold text-navy text-base mb-2">3. Data Sharing & Protection</h4><p><strong>We do not sell, rent, or trade your personal data.</strong> We share data only with necessary service providers (Razorpay, Google, WhatsApp API) and assigned human mentors bound by NDAs. Your data is encrypted and stored securely.</p></div>
+                <div><h4 class="font-poppins font-bold text-navy text-base mb-2">4. AI Chatbot "Saathi" Disclaimer</h4><p>Saathi is an automated AI tool. It is not a licensed counsellor. Responses may contain errors. We accept no liability for decisions made based on Saathi's responses. All information must be independently verified from official JoSAA sources.</p></div>
+                <div><h4 class="font-poppins font-bold text-navy text-base mb-2">5. Subscription Fees & Refund Policy</h4><p>Access to premium features requires payment of the applicable subscription fee. Phase 2 domain exploration remains completely free. Payments are non-refundable once premium features are accessed or mentor sessions are attended.</p></div>
+                <div><h4 class="font-poppins font-bold text-navy text-base mb-2">6. Limitation of Liability & No Guarantee</h4><p>Apna Sathee provides guidance and recommendations only. We do not guarantee admission to any college or branch. Final seat allocation is done by JoSAA. The Company shall not be liable for any decisions made based on Platform guidance.</p></div>
+                <div><h4 class="font-poppins font-bold text-navy text-base mb-2">7. Contact & Grievance Redressal</h4><p>For privacy queries: privacy@apnasaathi.in | For grievances: grievance@apnasaathi.in. We acknowledge complaints within 48 hours and resolve them within 7 business days.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Typewriter Effect
+        const words = ["Right College", "Dream Branch", "Best Path", "Future Career"];
+        let wordIndex = 0, charIndex = 0, isDeleting = false;
+        const typewriterElement = document.getElementById('typewriter');
+        function typeWriter() {
+            const currentWord = words[wordIndex];
+            if (isDeleting) { typewriterElement.textContent = currentWord.substring(0, charIndex - 1); charIndex--; }
+            else { typewriterElement.textContent = currentWord.substring(0, charIndex + 1); charIndex++; }
+            let typeSpeed = isDeleting ? 50 : 100;
+            if (!isDeleting && charIndex === currentWord.length) { typeSpeed = 2000; isDeleting = true; }
+            else if (isDeleting && charIndex === 0) { isDeleting = false; wordIndex = (wordIndex + 1) % words.length; typeSpeed = 500; }
+            setTimeout(typeWriter, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', typeWriter);
+
+        // Scroll Reveal Animation
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
+
+        // Animated Stat Counters
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target; const target = +counter.getAttribute('data-target');
+                    const duration = 2000; const startTime = performance.now();
+                    function updateCounter(currentTime) {
+                        const elapsed = currentTime - startTime; const progress = Math.min(elapsed / duration, 1);
+                        const easeOut = progress * (2 - progress); const current = Math.floor(easeOut * target);
+                        counter.innerText = current.toLocaleString('en-IN');
+                        if (progress < 1) { requestAnimationFrame(updateCounter); }
+                        else { counter.innerText = target.toLocaleString('en-IN') + '+'; }
+                    }
+                    requestAnimationFrame(updateCounter); observer.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+        // Flash Card Toggle Logic
+        function toggleCard(cardId) {
+            const cardBody = document.getElementById(`card-${cardId}`);
+            const parentCard = cardBody.closest('.flash-card');
+            const isOpen = cardBody.classList.contains('open');
+            document.querySelectorAll('.card-body').forEach(body => body.classList.remove('open'));
+            document.querySelectorAll('.flash-card').forEach(card => card.classList.remove('active'));
+            if (!isOpen) { cardBody.classList.add('open'); parentCard.classList.add('active'); }
+        }
+
+        // Countdown Timer Logic
+        const countdownDate = new Date("May 17, 2026 00:00:00").getTime();
+        function updateCountdown() {
+            const now = new Date().getTime(); const distance = countdownDate - now;
+            if (distance < 0) { document.getElementById("countdown-days").innerText = "00"; document.getElementById("countdown-hours").innerText = "00"; document.getElementById("countdown-minutes").innerText = "00"; document.getElementById("countdown-seconds").innerText = "00"; return; }
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("countdown-days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("countdown-hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("countdown-minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("countdown-seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
+        setInterval(updateCountdown, 1000); updateCountdown();
+
+        // Privacy Policy Modal Functions
+        function openPrivacyModal(event) { event.preventDefault(); document.getElementById('privacyModal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+        function closePrivacyModal() { document.getElementById('privacyModal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+        window.onclick = function(event) { const modal = document.getElementById('privacyModal'); if (event.target == modal) { closePrivacyModal(); } }
+    </script>
+</body>
+</html>
